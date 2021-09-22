@@ -8,6 +8,7 @@ import {
   where,
 } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { db } from "./firebase";
 
 function GetRoomList() {
@@ -16,6 +17,7 @@ function GetRoomList() {
 
   useEffect(() => {
     getData();
+    
   }, []);
 
   const getData = async () => {
@@ -49,7 +51,12 @@ function GetRoomList() {
     <div>
       {list.map((res) => 
         <div>
-          <h1><a href={`/${res[1]}`}>{res[0].name}</a></h1>
+          {/* {console.log(res)}
+          <h1>{res[0].name}</h1> */}
+          <h1><Link to={`/${res[1]}`}> {res[0].name}</Link></h1>
+
+          {/* <h1><a href={`/${res[1]}`}>{res[0].name}</a></h1> */}
+          {/* <h1><a href={`/${res[1]}`}>{res[0].name}</a></h1> */}
         </div>
       )}
     </div>
