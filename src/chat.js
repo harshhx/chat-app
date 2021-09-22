@@ -27,6 +27,8 @@ import {
 import React, { useState, useEffect } from "react";
 import { db } from "./firebase";
 import { async } from "@firebase/util";
+import './chat.css'
+
 
 import {
   BrowserRouter as Router,
@@ -134,36 +136,50 @@ function Chat() {
   }, [docData]);
 
   return (
-    <div>
-      <div
-        style={{
-          height: "500px",
-          overflow: "hidden",
-        }}
-      >
-        <MainContainer>
-          <ChatContainer>
-            <MessageList>
-              {messages.map((message) => (
-                <Message
-                  model={{
-                    message: message.text,
-                    sentTime: message.createdAt,
-                    sender: message.sentBy,
+          <div className="chat">
+            <div className="chat_header">
 
-                    direction: message.sentBy ===  1? "outgoing" : "incoming",
-                    position: "single",
-                  }}
-                ></Message>
-              ))}
-            </MessageList>
-          </ChatContainer>
-        </MainContainer>
-      </div>
+            </div>
+            <div className="chat_body">
 
-      <input value={input} onInput={(e) => setInput(e.target.value)} />
-      <button onClick={() => handlePress()}>submit</button>
-    </div>
+            </div>
+            <div className="chat_footer">
+              
+            </div>
+
+          </div>
+
+
+    // <div className="app_body">
+    //   <div
+    //     style={{
+    //       height: "500px",
+    //       overflow: "hidden",
+    //     }}
+    //   >
+    //     <MainContainer>
+    //       <ChatContainer>
+    //         <MessageList>
+    //           {messages.map((message) => (
+    //             <Message
+    //               model={{
+    //                 message: message.text,
+    //                 sentTime: message.createdAt,
+    //                 sender: message.sentBy,
+
+    //                 direction: message.sentBy ===  1? "outgoing" : "incoming",
+    //                 position: "single",
+    //               }}
+    //             ></Message>
+    //           ))}
+    //         </MessageList>
+    //       </ChatContainer>
+    //     </MainContainer>
+    //   </div>
+
+    //   <input value={input} onInput={(e) => setInput(e.target.value)} />
+    //   <button onClick={() => handlePress()}>submit</button>
+    // </div>
   );
 }
 
