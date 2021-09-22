@@ -17,10 +17,12 @@ import {
   doc,
   getDoc,
   addDoc,
+  updateDoc,
   collection,
   query,
   getDocs,
   where,
+  orderBy
 } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
 import { db } from "./firebase";
@@ -31,7 +33,7 @@ import {
   Switch,
   Route,
   Link,
-  useParams
+  useParams,
 } from "react-router-dom";
 
 function Chat() {
@@ -44,7 +46,7 @@ function Chat() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setSeconds(seconds => seconds + 1);
+      setSeconds((seconds) => seconds + 1);
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -54,38 +56,39 @@ function Chat() {
   }, [id]);
 
   useEffect(() => {
-    if (docId){
-    getAllMessages();
+    if (docId) {
+      getAllMessages();
     }
   }, [docId, id, seconds]);
-
-
 
   const getAllMessages = async () => {
     const temp = [];
     // console.log("HEYGBYYBYB" , docId)
-    const querySnapshot = await getDocs(collection(db,"THREADS",docId,"MESSAGES"));
+    const messgaeRef = collection(db, "THREADS", docId, "MESSAGES");
+
+    const q = query(messgaeRef, orderBy("createdAt"));
+    const querySnapshot = await getDocs(q);
+    // const querySnapshot = await getDocs(
+    //   collection(db, "THREADS", docId, "MESSAGES")
+    // );
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      temp.push(doc.data())
+      temp.push(doc.data());
     });
     // console.log(temp)
-    setMessage(temp)
+    setMessage(temp);
   };
 
   useEffect(() => {
-    console.log(messages)
-  }, [])
+    console.log(messages);
+  }, []);
 
   useEffect(() => {
     console.log(messages);
   }, [messages]);
 
   const getThreadInfo = async () => {
-    const q = query(
-      collection(db, "THREADS"),
-      where("__name__", "==", id)
-    );
+    const q = query(collection(db, "THREADS"), where("__name__", "==", id));
     const querySnapshot = await getDocs(q);
     // console.log("ttttttttttttttttttttt", querySnapshot)
     // setQuerry(temp)
@@ -106,11 +109,19 @@ function Chat() {
       createdAt: new Date().getTime(),
       system: true,
       sentBy: 1,
-    }
-    var temp2 = [...messages]
-    temp2.push(data)
-    setMessage(temp2)
+    };
+    var temp2 = [...messages];
+    temp2.push(data);
+    setMessage(temp2);
 
+    const data_latest_message = {
+      text: input,
+      createdAt: new Date().getTime(),
+    };
+    const lref = doc(db, "THREADS", docId);
+    const updateLatestMessageRef = await updateDoc(lref, {
+      latestMessage: data_latest_message,
+    });
 
     const docRef = addDoc(collection(db, "THREADS", docId, "MESSAGES"), data);
   };
@@ -121,8 +132,6 @@ function Chat() {
   useEffect(() => {
     console.log(docData);
   }, [docData]);
-
-  
 
   return (
     <div>
@@ -135,27 +144,18 @@ function Chat() {
         <MainContainer>
           <ChatContainer>
             <MessageList>
-              {messages.map((message)=>
+              {messages.map((message) => (
                 <Message
-                model={{
-                  message: message.text,
-                  sentTime: message.createdAt,
-                  sender: message.sentBy,
-                  
-                  direction: message.sentBy === 1? "outgoing": "incoming",
-                  position: "single",
-                }}
-              ></Message>
-              )}
-              <Message
-                model={{
-                  message: "Hello my friend",
-                  sentTime: "15 mins ago",
-                  sender: "Eliot",
-                  direction: "incoming",
-                  position: "single",
-                }}
-              ></Message>
+                  model={{
+                    message: message.text,
+                    sentTime: message.createdAt,
+                    sender: message.sentBy,
+
+                    direction: message.sentBy ===  1? "outgoing" : "incoming",
+                    position: "single",
+                  }}
+                ></Message>
+              ))}
             </MessageList>
           </ChatContainer>
         </MainContainer>
