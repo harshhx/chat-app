@@ -25,12 +25,6 @@ function MyFunctionalComponentFunction() {
         },
         users: [2,5],
       };
-
-      const data2 = {
-        text: `You have joined the room ${input}.`,
-        createdAt: new Date().getTime(),
-        system: true,
-      };
       const docRef = addDoc(collection(db, "THREADS"), data).then((res) =>
         addDoc(collection(res, "MESSAGES"), {
           text: `You have joined the room ${input}.`,

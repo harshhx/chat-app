@@ -6,6 +6,7 @@ import GetRoomList from "./get_rooms_of_user";
 import { Print } from "./test";
 import Home from "./home";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import AddRoom from "./AddRoom";
 
 import {
   doc,
@@ -30,9 +31,8 @@ function App() {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/roomlist" component={GetRoomList}></Route>
+            <Route exact path="/addroom" component={AddRoom}></Route>
             <Route exact path="/:id" component={Chat} />
-
-            {/* <Route path= '/addroom' component={AddRoom}></Route> */}
           </Switch>
         </div>
       </Router>
