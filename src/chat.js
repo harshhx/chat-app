@@ -17,6 +17,7 @@ import {
   doc,
   getDoc,
   addDoc,
+  updateDoc,
   collection,
   query,
   getDocs,
@@ -111,8 +112,17 @@ function Chat() {
     temp2.push(data)
     setMessage(temp2)
 
-
+    const data_latest_message = {
+      text: input,
+      createdAt: new Date().getTime(),
+    }
+    const lref = doc(db,"THREADS", docId)
+    const updateLatestMessageRef = await updateDoc(lref,{
+      latestMessage: data_latest_message
+  });
+  
     const docRef = addDoc(collection(db, "THREADS", docId, "MESSAGES"), data);
+
   };
   useEffect(() => {
     console.log(docId);
