@@ -7,6 +7,7 @@ import {
   query,
   getDocs,
   where,
+  onSnapshot,
 } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -25,24 +26,41 @@ function GetRoomList() {
   const [list, setData] = React.useState([]);
 
   useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    const test = [];
     const q = query(
       collection(db, "THREADS"),
       where("users", "array-contains", 1)
     );
-    const querySnapshot = await getDocs(q);
-    // console.log(querySnapshot);
-    querySnapshot.forEach((doc) => {
-      test.push([doc.data(), doc.id]);
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const cities = [];
+      querySnapshot.forEach((doc) => {
+        cities.push([doc.data(), doc.id]);
+      });
+      setData(cities);
     });
-    // console.log("Test is ", test);
-    setData(test);
-    setMessage("Test Message");
-  };
+    return ()=>{
+      unsubscribe();
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   getData();
+  // }, []);
+
+  // const getData = async () => {
+  //   const test = [];
+  //   const q = query(
+  //     collection(db, "THREADS"),
+  //     where("users", "array-contains", 1)
+  //   );
+  //   const querySnapshot = await getDocs(q);
+  //   // console.log(querySnapshot);
+  //   querySnapshot.forEach((doc) => {
+  //     test.push([doc.data(), doc.id]);
+  //   });
+  //   // console.log("Test is ", test);
+  //   setData(test);
+  //   setMessage("Test Message");
+  // };
   // useEffect(() => {
   //   if (list.length >0){
   //   const sample = list[0]
@@ -57,7 +75,7 @@ function GetRoomList() {
 
   return (
     <div className="sidebar">
-      <div className="sidebar_header">
+      {/* <div className="sidebar_header">
         <Avatar />
         <div className="sidebar_headerRight">
           <IconButton>
@@ -66,7 +84,7 @@ function GetRoomList() {
             <MoreVertSharpIcon />
           </IconButton>
         </div>
-      </div>
+      </div> */}
       <div className="sidebar_search">
         <div className="sidebar_searchContainer">
           <SearchIcon />
@@ -75,6 +93,7 @@ function GetRoomList() {
       </div>
       <div className="sidebar_chats">
         <SidebarChat addNewChat />
+
         {list.map((res) => (
           <SidebarChat
             key={res[1]}

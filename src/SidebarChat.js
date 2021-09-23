@@ -14,8 +14,10 @@ function SidebarChat({ id, name, addNewChat, latestMessage }) {
       </div>
     </div>
   ) : (
-    <div className="sidebarChat">
-      <h2>Add new Chat</h2>
+    <div>
+      <div className="sidebarChat">
+        <h2>Add new Chat</h2>
+      </div>
     </div>
   );
 }

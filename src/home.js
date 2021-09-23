@@ -7,7 +7,7 @@ function Home() {
     <div className="app">
         <div className="app_body">
             <GetRoomList /> 
-            {/* <Chat></Chat> */}
+            <Chat />
         </div>
        
 
