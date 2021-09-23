@@ -11,13 +11,13 @@ import {
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { db } from "./firebase";
-import './get_rooms_of_user.css'
-import DonutLargeSharpIcon from '@mui/icons-material/DonutLargeSharp';
-import ChatSharpIcon from '@mui/icons-material/ChatSharp';
-import MoreVertSharpIcon from '@mui/icons-material/MoreVertSharp';
+import "./get_rooms_of_user.css";
+import DonutLargeSharpIcon from "@mui/icons-material/DonutLargeSharp";
+import ChatSharpIcon from "@mui/icons-material/ChatSharp";
+import MoreVertSharpIcon from "@mui/icons-material/MoreVertSharp";
 import ChatSharp from "@mui/icons-material/ChatSharp";
-import {Avatar, IconButton } from "@mui/material";
-import SearchIcon from '@material-ui/icons/Search';
+import { Avatar, IconButton } from "@mui/material";
+import SearchIcon from "@material-ui/icons/Search";
 import SidebarChat from "./SidebarChat";
 
 function GetRoomList() {
@@ -26,7 +26,6 @@ function GetRoomList() {
 
   useEffect(() => {
     getData();
-    
   }, []);
 
   const getData = async () => {
@@ -38,7 +37,7 @@ function GetRoomList() {
     const querySnapshot = await getDocs(q);
     // console.log(querySnapshot);
     querySnapshot.forEach((doc) => {
-      test.push([doc.data(),doc.id]);
+      test.push([doc.data(), doc.id]);
     });
     // console.log("Test is ", test);
     setData(test);
@@ -54,36 +53,41 @@ function GetRoomList() {
   // var roomlist = list.map(function (res) {
   //   return <li>{res.name}</li>;
   // });
-  console.log(list)
+  console.log(list);
 
   return (
-      <div className="sidebar">
-        <div className="sidebar_header">
-          <Avatar />
-          <div className="sidebar_headerRight">
-            <IconButton>
+    <div className="sidebar">
+      <div className="sidebar_header">
+        <Avatar />
+        <div className="sidebar_headerRight">
+          <IconButton>
             <DonutLargeSharpIcon />
             <ChatSharp />
             <MoreVertSharpIcon />
-            </IconButton>
-          </div>
-        </div>
-        <div className="sidebar_search">
-                <div className="sidebar_searchContainer">
-                    <SearchIcon />
-                    <input type="text" placeholder="Search or start a new chat" />
-                </div>
-        </div>
-        <div className="sidebar_chats">
-          <SidebarChat addNewChat />
-          <SidebarChat />
+          </IconButton>
         </div>
       </div>
-
-
+      <div className="sidebar_search">
+        <div className="sidebar_searchContainer">
+          <SearchIcon />
+          <input type="text" placeholder="Search or start a new chat" />
+        </div>
+      </div>
+      <div className="sidebar_chats">
+        <SidebarChat addNewChat />
+        {list.map((res) => (
+          <SidebarChat
+            key={res[1]}
+            id={res[1]}
+            name={res[0].name}
+            latestMessage={res[0].latestMessage.text}
+          />
+        ))}
+      </div>
+    </div>
 
     // <div className="app_body">
-    //   {list.map((res) => 
+    //   {list.map((res) =>
     //     <div>
     //       {/* {console.log(res)}
     //       <h1>{res[0].name}</h1> */}

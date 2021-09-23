@@ -1,11 +1,13 @@
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import './App.css'
 import GetRoomList from "./get_rooms_of_user";
+import Chat from "./chat";
 function Home() {
   return (
     <div className="app">
         <div className="app_body">
-            <GetRoomList />
+            <GetRoomList /> 
+            {/* <Chat></Chat> */}
         </div>
        
 
