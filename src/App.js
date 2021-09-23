@@ -23,19 +23,29 @@ import { db } from "./firebase";
 function App() {
   return (
     <div>
-      <Router>
-        <div>
-          <div>
-            <Link to="/" />
-          </div>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/roomlist" component={GetRoomList}></Route>
-            <Route exact path="/addroom" component={AddRoom}></Route>
-            <Route exact path="/:id" component={Chat} />
-          </Switch>
+      <div className="app">
+        <div className="app_body">
+          <Router>
+            {/* <GetRoomList /> */}
+            <Switch>
+              <Route exact path="/rooms/:id">
+                <GetRoomList />
+                <Chat />
+              </Route>
+              
+              <Route exact path="/addRoom">
+                <GetRoomList />
+                <AddRoom />
+              </Route>
+              <Route path="/">
+                <GetRoomList />
+                {/* <AddRoom /> */}
+
+              </Route>
+            </Switch>
+          </Router>
         </div>
-      </Router>
+      </div>
     </div>
   );
 }

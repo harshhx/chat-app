@@ -12,6 +12,7 @@ import { db, app } from "./firebase";
 import { setDoc, Timestamp } from "firebase/firestore";
 import { Firestore } from "@firebase/firestore";
 import { async } from "@firebase/util";
+import './chat.css'
 
 function AddRoom() {
   const [input, setInput] = useState("");
@@ -80,7 +81,7 @@ function AddRoom() {
   console.log("Value", type);
 
   return (
-    <div>
+    <div className="Chat">
       <label>Please specify the following details:</label>
       <input
         placeholder="Name of the chat room"
