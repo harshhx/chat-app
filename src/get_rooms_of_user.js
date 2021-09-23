@@ -31,11 +31,11 @@ function GetRoomList() {
       where("users", "array-contains", 1)
     );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const cities = [];
+      const temp = [];
       querySnapshot.forEach((doc) => {
-        cities.push([doc.data(), doc.id]);
+        temp.push([doc.data(), doc.id]);
       });
-      setData(cities);
+      setData(temp);
     });
     return ()=>{
       unsubscribe();
@@ -86,10 +86,11 @@ function GetRoomList() {
         </div>
       </div> */}
       <div className="sidebar_search">
-        <div className="sidebar_searchContainer">
+        <h3>Welcome to GetWork</h3>
+        {/* <div className="sidebar_searchContainer">
           <SearchIcon />
           <input type="text" placeholder="Search or start a new chat" />
-        </div>
+        </div> */}
       </div>
       <div className="sidebar_chats">
         <SidebarChat addNewChat />

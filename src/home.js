@@ -5,10 +5,10 @@ import Chat from "./chat";
 function Home() {
   return (
     <div className="app">
-        <div className="app_body">
+        {/* <div className="app_body">
             <GetRoomList /> 
             <Chat />
-        </div>
+        </div> */}
        
 
       {/* <h1>

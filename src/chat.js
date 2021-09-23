@@ -23,7 +23,7 @@ import {
   getDocs,
   where,
   orderBy,
-  onSnapshot
+  onSnapshot,
 } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
 import { db } from "./firebase";
@@ -46,15 +46,13 @@ import {
 // import { IconButton } from "@mui/material";
 
 function Chat() {
-  // let { id } = useParams();
-  const id = "TVh9peSVZOzY4lzasQuv";
+  let { id } = useParams();
+  // const id = "TVh9peSVZOzY4lzasQuv";
   const [input, setInput] = useState("");
   const [docId, setId] = useState("");
   const [docData, setData] = useState({});
   const [messages, setMessage] = useState([]);
   const [seconds, setSeconds] = useState(0);
-
-
 
   useEffect(() => {
     const messgaeRef = collection(db, "THREADS", id, "MESSAGES");
@@ -63,13 +61,11 @@ function Chat() {
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const temp = [];
       querySnapshot.forEach((doc) => {
-          temp.push(doc.data());
+        temp.push(doc.data());
       });
-      setMessage(temp)
+      setMessage(temp);
     });
-    
-  }, [])
-
+  }, [id]);
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -95,6 +91,10 @@ function Chat() {
     // }
   }, []);
 
+  useEffect(() => {
+    getThreadInfo();
+  }, [id]);
+
   const getAllMessages = async () => {
     const temp = [];
     // console.log("HEYGBYYBYB" , docId)
@@ -102,7 +102,6 @@ function Chat() {
 
     const q = query(messgaeRef, orderBy("createdAt"));
 
-    
     const querySnapshot = await getDocs(q);
     // const querySnapshot = await getDocs(
     //   collection(db, "THREADS", docId, "MESSAGES")
@@ -111,7 +110,7 @@ function Chat() {
       // doc.data() is never undefined for query doc snapshots
       temp.push(doc.data());
     });
-    console.log("tempppppppppp",temp)
+    console.log("tempppppppppp", temp);
     setMessage(temp);
   };
 
@@ -138,7 +137,10 @@ function Chat() {
     });
   };
 
+  
+
   const handlePress = async () => {
+
     console.log(input);
     const data = {
       text: input,
@@ -146,10 +148,6 @@ function Chat() {
       system: true,
       sentBy: 1,
     };
-    var temp2 = [...messages];
-    temp2.push(data);
-    setMessage(temp2);
-
     const data_latest_message = {
       text: input,
       createdAt: new Date().getTime(),
@@ -161,6 +159,7 @@ function Chat() {
 
     const docRef = addDoc(collection(db, "THREADS", docId, "MESSAGES"), data);
   };
+
   // useEffect(() => {
   //   console.log(docId);
   // }, [docId]);
@@ -173,12 +172,17 @@ function Chat() {
     <div className="chat">
       <div className="chat_header"></div>
       <div className="chat_body">
-        {messages.map((message)=>{
-          return(
-            <p className={`chat_message ${message.sentBy === 1 && 'chat_receiver'} `}>
-            <span className="chat_name">{message.sentBy}</span>
-            {message.text}
-          </p>)
+        {messages.map((message) => {
+          return (
+            <p
+              className={`chat_message ${
+                message.sentBy === 1 && "chat_receiver"
+              } `}
+            >
+              <span className="chat_name">{message.sentBy}</span>
+              {message.text}
+            </p>
+          );
         })}
         {/* <p className="chat_message chat_receiver">
           <span className="chat_name">1</span>
@@ -198,15 +202,14 @@ function Chat() {
         <IconButton>
           <InsertEmoticonIcon />
         </IconButton>
-        <form>
+  
           <input
-          // value={input}
-          // onChange={(e) => setInput(e.target.value)}
-          // type="text"
-          // placeholder="Type a message"
+            value={input}
+            onInput={(e) => setInput(e.target.value)}
+            placeholder="Type a message"
           />
-          <button type="submit">Send a message</button>
-        </form>
+          <button onClick={() => handlePress()}>submit</button>
+  
         <IconButton>
           <MicIcon />
         </IconButton>
